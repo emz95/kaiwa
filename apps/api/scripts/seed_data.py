@@ -66,11 +66,9 @@ cards = [
 ]
 
 for card in cards:
-    # Check if card already exists (by scenario_id, npc, and intent)
     existing_card = supabase.table("cards").select("id").eq("scenario_id", scenario_ids[card["scenario_slug"]]).eq("npc", card["npc"]).eq("intent", card["intent"]).execute()
     
     if not existing_card.data:
-        # Only insert if it doesn't exist
         supabase.table("cards").insert({
             "scenario_id": scenario_ids[card["scenario_slug"]],
             "npc": card["npc"],

@@ -11,9 +11,9 @@ router = APIRouter(
 
 @router.get("", response_model=list[ScenarioResponse])
 def get_scenarios():
-    """Get all scenarios"""
+    """Get all active scenarios, sorted by order_index"""
     try:
-        response = supabase.table("scenarios").select("*").execute()
+        response = supabase.table("scenarios").select("*").eq("is_active", True).order("order_index").execute()
         return response.data or []
     except Exception as e:
         print(f"Error fetching scenarios: {str(e)}")

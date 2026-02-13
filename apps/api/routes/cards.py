@@ -28,26 +28,6 @@ def get_card(card_id: UUID):
             detail="Failed to fetch card. Please try again later."
         )
 
-@router.post("", status_code=status.HTTP_201_CREATED, response_model=CardResponse)
-def create_card(card: CardCreate):
-    """Create a new card"""
-    try:
-        response = supabase.table("cards").insert(card.model_dump()).execute()
-        if not response.data:
-            raise HTTPException(
-                status_code=500,
-                detail="Failed to create card"
-            )
-        return response.data[0]
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Error creating card: {str(e)}")
-        raise HTTPException(
-            status_code=500,
-            detail="Failed to create card. Please try again later."
-        )
-
 @router.patch("/{card_id}", response_model=CardResponse)
 def update_card(card_id: UUID, card: CardUpdate):
     """Update a specific card"""
